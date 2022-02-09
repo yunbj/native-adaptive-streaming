@@ -1,7 +1,25 @@
 <!--
     Modifications copyright (C) 2017 David Ćavar
  -->
-Forked from https://github.com/gramk/chrome-hls and added additional features.
+# Disclaimer
+I forked this repository from https://github.com/ghouet/chrome-hls. Original extension supports HLS only, I additionally wanted to support MPEG-DASH.
+Extension was created purely from the need to easily test and preview HTTP streams using simple mouse click.<br/>
+<br/>
+I'm a lone developer on this project, and I have a day job as a software developer which consumes most of my time. I spend the rest of my time either pursuing other 
+hobbies, spending time with my family, or handling life obligations. That means mostly avoiding stuff related to my work as a developer. Because of that my response and development is slow. Any development I do on this project is
+for the satisfaction of giving back to the community which helped me do my job in the first place. If not for that, I would not have published the extension to any major web stores.<br/>
+<br/>
+The extension is what it is. I may refactor it, rename it, rebrand it, or I may not.<br/>
+<br/>
+I will try to fix any bugs if I can reproduce them. There are lot of test cases out there and I do not have time to prepare test streams for each of them.
+I would appreciate if you could provide as many details as you can when reporting a ticket, and provide a sample stream for which you believe the player 
+has a problem with.<br/>
+<br/>
+Shout out to [ghouet](https://github.com/ghouet) who started the original project. It saved me a lot of time.<br/>
+Shout out to all the developers, maintainers, testers and contributors of the [hls.js](https://github.com/video-dev/hls.js) 
+and [dash.js](https://github.com/Dash-Industry-Forum/dash.js) project who keep it going.<br/>
+<br/>
+And thanks everyone who donated, keeps me floating.
 
 # Native HLS + MPEG-Dash Extension
 
