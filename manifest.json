@@ -1,6 +1,6 @@
 {
     "name": "Native MPEG-Dash + HLS Playback",
-    "version": "3.3.0",
+    "version": "4.0.0",
     "description": "Allow the browser to play HLS (m3u8) or MPEG-Dash (mpd) video urls 'natively'",
     "manifest_version": 2,
     
@@ -17,6 +17,7 @@
 
     {% if (env['target'] == 'chrome') or  (env['target'] == 'self_hosted') %}
     "content_security_policy": "script-src 'self' https://cdn.jsdelivr.net blob:; object-src 'self'",
+    "incognito": "split",
     {% endif %}
     
     "permissions": [
@@ -37,6 +38,7 @@
         "default_icon": "assets/icon128.png",
         "default_popup": "popup.html"
     },
+
     "web_accessible_resources": [
         {{ env['web_accessible_resources'] }}
     ]

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 import os
 from glob import glob
@@ -15,7 +17,7 @@ parser.add_argument('-e', '--env', help="Provide environment")
 args = parser.parse_args()
 
 yml = open(os.path.join(PATH, 'build_config', args.env + '.yml'), "r") 
-env = yaml.load(yml.read())
+env = yaml.safe_load(yml.read())
 yml.close()
 
 dist_dir = os.path.join(PATH, "dist", env['environment'], env['target'])

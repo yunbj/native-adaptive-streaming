@@ -32,7 +32,8 @@ var HlsTech = function(options) {
     });
 
     this.player.on(Hls.Events.LEVEL_LOADED, function(event, data) {
-        if(data.details != undefined && data.details.type !== 'VOD') { console.log(data.details);
+        if(data.details != undefined && data.details.type !== 'VOD') {
+            console.log(data.details);
             self.is_live = true;
         }
 

@@ -295,7 +295,7 @@ function loadSubtitles() {
     player.loadSubtitles(subtitles_url_input.value);
 }
 
-window.addEventListener('keypress', function(e) {
+window.addEventListener('keyup', function(e) {
     if(e.key == 'f') {
         switchToFullscreen();
         return;
