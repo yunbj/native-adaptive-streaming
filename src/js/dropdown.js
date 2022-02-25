@@ -4,7 +4,8 @@ var Dropdown = function(settings) {
     this.value = null;
     this.settings = settings;
     this.target.style.overflow = 'hidden';
-    this.target.style.height = 41 + 'px';
+    this.default_height = 36;
+    this.target.style.height = this.default_height + 'px';
     this.state = 0;
     this.mainElement = null;
 
@@ -91,11 +92,11 @@ var Dropdown = function(settings) {
     }
 
     this.open = function() {
-        this.target.style.height = ((this.settings.options.length + 1) * 41) + 'px';
+        this.target.style.height = ((this.settings.options.length + 1) * this.default_height) + 'px';
     }
 
     this.close = function() {
-        this.target.style.height = 41 + 'px';
+        this.target.style.height = this.default_height + 'px';
     }
 
     this.clear = function() {

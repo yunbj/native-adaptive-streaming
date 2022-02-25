@@ -38,6 +38,13 @@ var SmoothTech = function(options) {
         return this.player.isLive();
     }
 
+    this.getAudioTracks = function() {
+        return [];
+    }
+
+    this.setAudioTrack = function() {
+    }
+
     this.getQualities = function() {
         var u = this.player.getVideoBitrates();
 

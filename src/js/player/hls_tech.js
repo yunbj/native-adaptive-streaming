@@ -33,7 +33,6 @@ var HlsTech = function(options) {
 
     this.player.on(Hls.Events.LEVEL_LOADED, function(event, data) {
         if(data.details != undefined && data.details.type !== 'VOD') {
-            console.log(data.details);
             self.is_live = true;
         }
 
@@ -86,6 +85,25 @@ var HlsTech = function(options) {
 
     this.isLive = function() {
         return this.is_live;
+    }
+
+    this.getAudioTracks = function() {
+        var tracks = this.player.audioTracks;
+        var tr = [];
+        
+        for(var i = 0; i < tracks.length; i++) {
+            tr.push({
+                name: tracks[i].name,
+                index: i,
+                lang: tracks[i].lang
+            });
+        }
+        
+        return tr;
+    }
+
+    this.setAudioTrack = function(index) {
+        this.player.audioTrack = index + 1;
     }
 
     this.getQualities = function() {

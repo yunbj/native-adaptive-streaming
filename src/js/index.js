@@ -61,6 +61,13 @@ state_machine.addTransitions('loader', [
     }}
 ], 'visible');
 
+state_machine.addTransitions('load_audio_selection', [
+    {from: false, to: true, object: undefined, handle: function(transition) {
+    }},
+    {from: true, to: false, object: undefined, handle: function(transition) {
+    }}
+], false);
+
 state_machine.addTransitions('load_qualities', [
     {from: false, to: true, object: undefined, handle: function(transition) {
     }},
@@ -125,6 +132,7 @@ var formatTimeFromSeconds = function(val) {
 function playUrl(url) {
     reset();
     state_machine.setState('load_qualities', true);
+    state_machine.setState('load_audio_selection', true);
 
     player = new Player({
         "url": url,
@@ -152,6 +160,7 @@ function playUrl(url) {
             switch(event.type) {
                 case "loadeddata": 
                     fillBitrates(player.getQualities());
+                    fillAudioSelection(player.getAudioTracks());
 
                     if(!player.isLive()) {
                         progress.classList.remove('collapsed');
@@ -166,6 +175,7 @@ function playUrl(url) {
                     break;
                 case 'streamInitialized':
                     fillBitrates(player.getQualities());
+                    fillAudioSelection(player.getAudioTracks());
                     break;
                 case "hlsLevelLoaded":
                     if(event.details != undefined && event.details.live == false) {
@@ -176,6 +186,7 @@ function playUrl(url) {
                     }
 
                     fillBitrates(player.getQualities());
+                    fillAudioSelection(player.getAudioTracks());
                     break;
                 case "manifestLoaded":
                     if(event.data.type == 'static') {
@@ -186,6 +197,7 @@ function playUrl(url) {
                     }
 
                     fillBitrates(player.getQualities());
+                    fillAudioSelection(player.getAudioTracks());
                     break;
                 case 'timeupdate':
 
@@ -222,7 +234,7 @@ function playUrl(url) {
                         });
 
                         if(player.getVolume() == 0) {
-                            volume_btn.childNodes[0].innerText = 'volume_mute';
+                            // volume_btn.childNodes[0].innerText = 'volume_mute';
                         } else if(player.getVolume() > 0 && player.getVolume() < .5) {
                             volume_btn.childNodes[0].innerText = 'volume_down';
                         } else if(player.getVolume() > .5) {
@@ -341,6 +353,7 @@ function restoreSettings() {
 
 restoreSettings();
 
+// FIXME: Dropdowns get recreated and event listeners are cleared
 var btn_flats = document.querySelectorAll('.btn-flat');
 
 for(var i = 0; i < btn_flats.length; i++) {

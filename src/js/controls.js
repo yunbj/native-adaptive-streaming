@@ -104,6 +104,47 @@ timeout_id = setTimeout(function() {
     state_machine.transition('controls', 'invisible');
 }, 3000);
 
+var fillAudioSelection = function(audio_list) {
+    if(audio_list.length == 0) {
+        return;
+    }
+
+    if(state_machine.getState('load_audio_selection') === false) {
+        return;
+    }
+
+    state_machine.setState('load_audio_selection', false);
+    audio_selection.clear();
+    audio_selection.addOption({label: "Auto", value: -1, selected: true});
+    var label = '';
+    var lbl = [];
+
+    for(var i = 0; i < audio_list.length; i++) {
+        label = '';
+        lbl = [];
+
+        if(audio_list[i].id != undefined) {
+            lbl.push(audio_list[i].id + ': ');
+        }
+
+        if(audio_list[i].name != undefined) {
+            lbl.push(audio_list[i].name);
+        }
+
+        if(audio_list[i].lang != undefined) {
+            lbl.push(audio_list[i].lang);
+        }
+
+        label = lbl.join(', ');
+
+        audio_selection.addOption({label: label, value: audio_list[i].index, selected: false});
+    }
+
+    audio_selection.addEventListener('change', function(e) {
+        player.setAudioTrack(parseInt(e.value) - 1);
+    });
+}
+
 var fillBitrates = function(bitrates) {
     if(bitrates.length == 0) {
         return;
@@ -116,15 +157,25 @@ var fillBitrates = function(bitrates) {
     state_machine.setState('load_qualities', false);
     bitrate_selection.clear();
     bitrate_selection.addOption({label: "Auto", value: -1, selected: true});
-    
+    var label = '';
+    var lbl = [];
+
     for(var i = 0; i < bitrates.length; i++) {
+        lbl = [];
+
         if(bitrates[i].name != undefined) {
-            label = bitrates[i].name;
-        } else if(bitrates[i].height != undefined) {
-            label = bitrates[i].height;
-        } else {
-            label = bitrates[i].bitrate;
+            lbl.push(bitrates[i].name);
         }
+
+        if(bitrates[i].height != undefined) {
+            lbl.push(bitrates[i].height);
+        }
+
+        if(bitrates[i].bitrate != undefined) {
+            lbl.push(bitrates[i].bitrate);
+        }
+
+        label = lbl.join(', ');
 
         bitrate_selection.addOption({label: label, value: bitrates[i].index, selected: false});
     }

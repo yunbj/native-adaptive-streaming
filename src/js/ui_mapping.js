@@ -63,6 +63,11 @@ var bitrate_selection = new Dropdown({
     label: "Bitrate"
 });
 
+var audio_selection = new Dropdown({
+    target: document.querySelector('#audio-selection'),
+    label: "Audio"
+});
+
 var playback_speed_selection = new Dropdown({
     target: document.querySelector('#playback-speed-selection'),
     label: "Playback speed",

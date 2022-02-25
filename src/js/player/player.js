@@ -19,8 +19,8 @@ var Player = function(options) {
     var self = this;
 
     this.available_events = ["abort", "canplay", "canplaythrough", "durationchange", "emptied", "encrypted", "ended", "error", "interruptbegin", "loadeddata", 
-                             "loadedmetadata", "loadstart", "pause", "play", "playing", "progress", "ratechange", "seeked", "seeking", "stalled", "suspend", 
-                             "timeupdate", "volumechange", "waiting"];
+        "loadedmetadata", "loadstart", "pause", "play", "playing", "progress", "ratechange", "seeked", "seeking", "stalled", "suspend", 
+        "timeupdate", "volumechange", "waiting"];
 
     if(options.debug == undefined) {
         options.debug = false;
@@ -102,12 +102,24 @@ var Player = function(options) {
         return this.getTech().isLive();
     }
 
+    this.getAudioTracks = function() {
+        return this.getTech().getAudioTracks();
+    }
+
+    this.setAudioTrack = function(index) {
+        this.getTech().setAudioTrack(index);
+    }
+
     this.getQualities = function() {
         return this.getTech().getQualities();
     }
 
     this.setQuality = function(index) {
         this.getTech().setQuality(index);
+    }
+
+    this.getAudioTracks = function() {
+        return this.getTech().getAudioTracks();
     }
 
     this.setMaxQuality = function() {

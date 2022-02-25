@@ -27,7 +27,7 @@ var DashTech = function(options) {
     });
 
     this.player.on(dashjs.MediaPlayer.events.MANIFEST_LOADED, function(e) {
-        if(e.data.type == 'dynamic') { console.log(e.data.type);
+        if(e.data.type == 'dynamic') {
             self.is_live = true;
         }
 
@@ -82,6 +82,29 @@ var DashTech = function(options) {
 
     this.isLive = function() {
         return this.is_live;
+    }
+
+    this.getAudioTracks = function() {
+        var u = this.player.getTracksFor('audio');
+
+        var audio_list = [];
+
+        for(var i = 0; i < u.length; i++) {
+            var b = {};
+            b.name = u[i].lang;
+            b.index = u[i].index;
+            audio_list.push({
+                lang: u[i].lang,
+                name: u[i].name,
+                index: u[i].index
+            });
+        }
+
+        return audio_list;
+    }
+
+    this.setAudioTrack = function(index) {
+        this.player.setCurrentTrack(this.player.getTracksFor('audio')[index]);
     }
 
     this.getQualities = function() {
