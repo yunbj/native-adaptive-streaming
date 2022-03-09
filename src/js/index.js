@@ -12,13 +12,13 @@ function resize() {
     }
 }
 
-// {% if (env['target'] == 'chrome') or  (env['target'] == 'self_hosted') %}
-
 var hlsjs_version = 0;
 var dashjs_version = 0;
+var hasplayerjs_version = 0;
 
 var hlsjs_loaded = false;
 var dashjs_loaded = false;
+var hasplayerjs_loaded = false;
 
 var maxQuality = false;
 
@@ -27,30 +27,41 @@ var video_native_mode = false;
 function loadLibs(url) {
     var s1 = document.createElement('script');
     var s2 = document.createElement('script');
+    var s3 = document.createElement('script');
+
+    s3.onload = function() {
+        hasplayerjs_loaded = true;
+        console.log('hasplayerjs loaded');
+
+        if(hasplayerjs_loaded && hlsjs_loaded && dashjs_loaded) {
+            playUrl(url);
+        }
+    };
 
     s2.onload = function() {
         dashjs_loaded = true;
-        if (dashjs_loaded && hlsjs_loaded) { 
+        console.log('dashjs loaded');
+        if(hasplayerjs_loaded && hlsjs_loaded && dashjs_loaded) {
             playUrl(url);
         }
     };
 
     s1.onload = function() {
         hlsjs_loaded = true;
-        if (dashjs_loaded && hlsjs_loaded) {
+        console.log('hlsjs loaded');
+        if(hasplayerjs_loaded && hlsjs_loaded && dashjs_loaded) {
             playUrl(url); 
         }
     }
 
-    s1.src = 'https://cdn.jsdelivr.net/npm/hls.js@' + hlsjs_version + '/dist/hls.min.js';
+    s1.src = '/libs/hlsjs/hls-' + hlsjs_version + '.min.js';
     document.querySelector('head').appendChild(s1);
-    s2.src = 'https://cdn.jsdelivr.net/npm/dashjs@' + dashjs_version + '/dist/dash.all.min.js';
+    s2.src = '/libs/dashjs/dash-' + dashjs_version + '.all.min.js';
     document.querySelector('head').appendChild(s2);
+    s3.src = '/libs/hasplayerjs/hasplayer-' + hasplayerjs_version + '.min.js';
+    document.querySelector('head').appendChild(s3);
 }
 
-// {% elif env['target'] == 'firefox' %}
-
-// {% endif %}
 
 state_machine.addTransitions('loader', [
     {from: 'visible', to: 'invisible', object: loader, handle: function(transition) {
@@ -130,6 +141,7 @@ var formatTimeFromSeconds = function(val) {
 }
 
 function playUrl(url) {
+    console.log(url);
     reset();
     state_machine.setState('load_qualities', true);
     state_machine.setState('load_audio_selection', true);
@@ -308,12 +320,12 @@ for(var i = 0; i < close_input.length; i++) {
 function restoreSettings() {
 
     chrome.storage.local.get({
-        // {% if (env['target'] == 'chrome') or  (env['target'] == 'self_hosted') %}
-
-        hlsjs_version: "0.8.9",
-        dashjs_version: "2.6.5",
-        // {% endif %}
-
+        hlsjs_version: "1.1.5",
+        dashjs_version: "4.3.0",
+        hasplayerjs_version: "4.3.0",
+        use_latest_dashjs: true,
+        use_latest_hlsjs: true,
+        use_latest_hasplayerjs: true,
         debug: false,
         video_native_mode: false,
         maxQuality: false,
@@ -331,16 +343,26 @@ function restoreSettings() {
 
         media_url_input.value = url;
         user_volume = settings.user_volume;
-        
-        // {% if env['target'] == 'firefox' %}
 
-        playUrl(url);
-        // {% elif env['target'] == 'chrome' %}
+        if(settings.use_latest_hlsjs) {
+            hlsjs_version = versions['hls.js'][0];
+        } else {
+            hlsjs_version = settings.hlsjs_version;
+        }
 
-        hlsjs_version = settings.hlsjs_version;
-        dashjs_version = settings.dashjs_version;
+        if(settings.use_latest_dashjs) {
+            dashjs_version = versions['dashjs'][0];
+        } else {
+            dashjs_version = settings.dashjs_version;
+        }
+
+        if(settings.use_latest_hasplayerjs) {
+            hasplayerjs_version = versions['hasplayer.js'][0];
+        } else {
+            hasplayerjs_version = settings.hasplayerjs_version;
+        }
+
         loadLibs(url);
-        // {% endif %}
 
         if(video_native_mode) {
             video_element.classList.remove('responsive');

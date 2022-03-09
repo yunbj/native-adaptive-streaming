@@ -67,7 +67,7 @@ var HlsTech = function(options) {
                     self.options.event_handler(data);
                     self.destroy();
                     break;
-              }
+            }
         }
     });
 

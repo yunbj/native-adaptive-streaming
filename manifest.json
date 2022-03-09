@@ -16,7 +16,7 @@
     "background": { "scripts": [ "background.js"] },
 
     {% if (env['target'] == 'chrome') or  (env['target'] == 'self_hosted') %}
-    "content_security_policy": "script-src 'self' https://cdn.jsdelivr.net blob:; object-src 'self'",
+    "content_security_policy": "script-src 'self' blob:; object-src 'self'",
     "incognito": "split",
     {% endif %}
     

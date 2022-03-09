@@ -9,13 +9,17 @@
         <style>body { padding: 10px; }</style>
     </head>
     <body>
-        <!-- {% if (env['target'] == 'chrome') or  (env['target'] == 'self_hosted') %} -->
-
         <p>
             <label for="hlsjsSel">
                 hls.js version:
                 <select id="hlsjsSel">
                 </select>
+            </label>
+        </p>
+        <p>
+            <label for="useLatestHlsjs">
+                Use latest version of hls.js:
+                <input type="checkbox" id="useLatestHlsjs">
             </label>
         </p>
         <p>
@@ -25,7 +29,25 @@
                 </select>
             </label>
         </p>
-        <!-- {% endif %} -->
+        <p>
+            <label for="useLatestDashjs">
+                Use latest version of dashjs:
+                <input type="checkbox" id="useLatestDashjs">
+            </label>
+        </p>
+        <p>
+            <label for="hasplayerjsSel">
+                hasplayer.js version:
+                <select id="hasplayerjsSel">
+                </select>
+            </label>
+        </p>
+        <p>
+            <label for="useLatestHasplayerjs">
+                Use latest version of hasplayer.js:
+                <input type="checkbox" id="useLatestHasplayerjs">
+            </label>
+        </p>
         
         <p>
             <label for="maxQuality">
@@ -48,6 +70,7 @@
         <button id="saveSettings">Save</button>
         <span id="status"></span>
     </body>
+    <script src="libs/versions_list.js"></script>
     <script src="ajax.js"></script>
     <script src="state_machine.js"></script>
     <script src="globals.js"></script>
