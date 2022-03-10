@@ -2,6 +2,31 @@
  * Modifications copyright (C) 2017 David Ćavar
  */
 
+ document.getElementById('useLatestHlsjs').addEventListener('change', function(e) {
+
+    if(document.getElementById('useLatestHlsjs').checked) {
+        document.getElementById('hlsjsSel').disabled = 'disabled';
+    } else {
+        document.getElementById('hlsjsSel').disabled = false;
+    }
+});
+
+ document.getElementById('useLatestDashjs').addEventListener('change', function(e) {
+    if(document.getElementById('useLatestDashjs').checked) {
+        document.getElementById('dashjsSel').disabled = 'disabled';
+    } else {
+        document.getElementById('dashjsSel').disabled = false;
+    }
+});
+
+document.getElementById('useLatestHasplayerjs').addEventListener('change', function(e) {
+    if(document.getElementById('useLatestHasplayerjs').checked) {
+        document.getElementById('hasplayerjsSel').disabled = 'disabled';
+    } else {
+        document.getElementById('hasplayerjsSel').disabled = false;
+    }
+});
+
 function save_options() {
     var hlsjs_version = document.getElementById('hlsjsSel').value;
     var dashjs_version = document.getElementById('dashjsSel').value;
