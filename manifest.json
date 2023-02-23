@@ -2,44 +2,28 @@
     "name": "Native MPEG-Dash + HLS Playback",
     "version": "4.0.0",
     "description": "Allow the browser to play HLS (m3u8) or MPEG-Dash (mpd) video urls 'natively'",
-    "manifest_version": 2,
-    
-    {% if env['target'] == 'firefox' %}
-    "applications": {
-        "gecko": {
-            "id": "native-dash-hls@cavar.net"
-        }
-    },
-    {% endif %}
-
+    "manifest_version": 3,
     "icons": { "128": "assets/icon128.png" },
-    "background": { "scripts": [ "background.js"] },
-
-    {% if (env['target'] == 'chrome') or  (env['target'] == 'self_hosted') %}
-    "content_security_policy": "script-src 'self' blob:; object-src 'self'",
-    "incognito": "split",
-    {% endif %}
-    
+    "background": { 
+        "service_worker": "background.js",
+        "type": "module"
+    },
     "permissions": [
         "tabs",
+        "storage",
+        "declarativeNetRequest"
+    ],
+    "host_permissions": [
         "*://*/*.m3u8*",
         "*://*/*.mpd*",
-        "*://*/*/Manifest*",
-        "webRequest",
-        "webRequestBlocking",
-        "storage"
+        "*://*/*/Manifest*"
     ],
     "options_ui": {
-        "page": "options.html",
-        "chrome_style": true
+        "page": "options.html"
     },
-    "browser_action": {
+    "action": {
         "default_title": "Native MPEG-Dash + HLS Playback",
         "default_icon": "assets/icon128.png",
         "default_popup": "popup.html"
-    },
-
-    "web_accessible_resources": [
-        {{ env['web_accessible_resources'] }}
-    ]
+    }
 }

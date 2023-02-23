@@ -3,35 +3,21 @@
  */
 var enabled = true;
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-    if (request == "getState") {
-        sendResponse(enabled);
-        return;
-    }
-    
-    enabled = request == "ENABLE";
-    enabled ? chrome.browserAction.setIcon({path: "assets/icon128.png" }) : chrome.browserAction.setIcon({ path:"assets/icon128grey.png" });
+var extension_page = chrome.runtime.getURL('/index.html');
+
+var rules = [{
+  id: 1,
+  action: {
+    type: 'redirect',
+    redirect: { regexSubstitution: extension_page + '#\\0' },
+  },
+  condition: {
+    regexFilter: '^https?://.*/.*(\.mpd|\.m3u8?|/Manifest).*',
+    resourceTypes: ['main_frame', 'sub_frame'],
+  },
+}];
+
+chrome.declarativeNetRequest.updateDynamicRules({
+  removeRuleIds: rules.map(r => r.id),
+  addRules: rules,
 });
-
-chrome.webRequest.onBeforeRequest.addListener(function(info) { 
-    if(
-        !enabled 
-        || (
-            !info.url.split("?")[0].split("#")[0].endsWith(".m3u8") 
-            && !info.url.split("?")[0].split("#")[0].endsWith(".mpd") 
-            && !info.url.split("?")[0].split("#")[0].endsWith("Manifest")
-            )
-        ) {
-            
-        return null;
-    }
-
-    var playerUrl = chrome.runtime.getURL('index.html') + "#" + info.url;
-
-    if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
-        chrome.tabs.update(info.tabId, {url: playerUrl});
-        return {cancel: true};
-    }
-        
-    return { redirectUrl:  playerUrl };
-}, {urls: ["*://*/*.m3u8*", "*://*/*.mpd*", "*://*/*/Manifest*"], types:["main_frame"]}, ["blocking"]);

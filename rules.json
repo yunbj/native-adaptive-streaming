@@ -1,10 +1,9 @@
-{  
+[{  
     "id": 1,
+    "priority": 1,
+    "action": { "type": "block" },
     "condition": {
-       "regexFilter": "^https?://.*/.*\\.(mpd|m3u8?|Manifest).*"
-    },
-    "action": { 
-       "type": "block"
+       "regexFilter": "^https?://.*/.*\\.(mpd|m3u8?|Manifest).*",
+       "resourceTypes": ["main_frame"]
     }
-}
- 
+}]

@@ -34,6 +34,18 @@ lst = json.loads(response.content)
 hasplayerjs_versions = lst['versions']
 
 for version in hasplayerjs_versions:
+    if 'canary' in version:
+        continue
+
+    if 'beta' in version:
+        continue
+
+    if 'alpha' in version:
+        continue
+
+    if 'rc' in version:
+        continue
+
     url = 'https://cdn.jsdelivr.net/npm/hasplayer.js@' + version + '/dist/hasplayer.min.js'
     download(url, 'libs/hasplayerjs/hasplayer-' + version + '.min.js')
     versions_list['hasplayer.js'].append(version)
@@ -42,12 +54,36 @@ for version in dashjs_versions:
     if '0.0.0' == version or '1.1.1' == version or '2.0.0-rc4' == version:
         continue
 
+    if 'canary' in version:
+        continue
+
+    if 'beta' in version:
+        continue
+
+    if 'alpha' in version:
+        continue
+
+    if 'rc' in version:
+        continue
+
     url = 'https://cdn.jsdelivr.net/npm/dashjs@' + version + '/dist/dash.all.min.js'
     download(url, 'libs/dashjs/dash-' + version + '.all.min.js')
     versions_list['dashjs'].append(version)
 
 
 for version in hlsjs_versions:
+    if 'canary' in version:
+        continue
+
+    if 'beta' in version:
+        continue
+
+    if 'alpha' in version:
+        continue
+
+    if 'rc' in version:
+        continue
+
     url = 'https://cdn.jsdelivr.net/npm/hls.js@' + version + '/dist/hls.min.js'
     download(url, 'libs/hlsjs/hls-' + version + '.min.js')
     versions_list['hls.js'].append(version)
