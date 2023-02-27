@@ -19,7 +19,7 @@ function updateState() {
         btnUpdate.innerText = 'ENABLE';
     }
 
-    window.close();
+    // window.close();
 }
 
 document.getElementById('btnSettings').addEventListener('click', function(){
