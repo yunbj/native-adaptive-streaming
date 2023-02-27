@@ -15,12 +15,19 @@ var Player = function(options) {
     this.tech = null;
     this.volume = .5;
     this.muted = false;
+    
+    this.playlist = null;
     this.options = options;
-    var self = this;
+    this.event_handlers = {};
+    this.event_handler_count = 0;
 
-    this.available_events = ["abort", "canplay", "canplaythrough", "durationchange", "emptied", "encrypted", "ended", "error", "interruptbegin", "loadeddata", 
+    this.available_events = [
+        "abort", "canplay", "canplaythrough", "durationchange", "emptied", "encrypted", "ended", "error", "interruptbegin", "loadeddata", 
         "loadedmetadata", "loadstart", "pause", "play", "playing", "progress", "ratechange", "seeked", "seeking", "stalled", "suspend", 
-        "timeupdate", "volumechange", "waiting"];
+        "timeupdate", "volumechange", "waiting"
+    ];
+    
+    var _player = this;
 
     if(options.debug == undefined) {
         options.debug = false;
@@ -38,46 +45,35 @@ var Player = function(options) {
         return this.tech;
     }
 
-    this.addEventHandler = function() {
-        for(var i = 0; i < this.available_events.length; i++) {
-            this.options.video_element.addEventListener(this.available_events[i], this.options.event_handler, false);
+    this.handleEvent = function(event) {
+        if((event.type in _player.event_handlers)) {
+            for(event_handler_id in _player.event_handlers[event.type]) {
+                _player.event_handlers[event.type][event_handler_id](event);
+            }
         }
     }
 
-    this.removeEventHandler = function() {
-        for(var i = 0; i < this.available_events.length; i++) {
-            this.options.video_element.removeEventListener(this.available_events[i], this.options.event_handler);
-        }
+    for(var i = 0; i < this.available_events.length; i++) {
+        this.options.video_element.addEventListener(this.available_events[i], this.handleEvent, false);
     }
 
-    this.guess = function() {
-        if(this.options.tech != undefined) {
-            if(this.options.tech = 'dash') {
-                this.tech = new DashTech(this.options);
-            } else if(this.options.tech = 'smooth') {
-                this.tech = new SmoothTech(this.options);
-            } else if(this.options.tech = 'hls') {
-                this.tech = new HlsTech(this.options);
-            } else if(this.options.tech = 'smooth') {
-                this.tech = new SmoothTech(this.options);
-            }
-        } else {
-            var url = this.getUrl();
-
-            if(url.indexOf('.mpd') > -1) {
-                console.log("Selecting DASH tech...");
-                this.tech = new DashTech(this.options);
-            } else if(url.indexOf('.m3u8') > -1) {
-                console.log("Selecting HLS tech...");
-                this.tech = new HlsTech(this.options);
-            } else if(url.indexOf('Manifest') > -1) {
-                console.log("Selecting Smooth tech...");
-                this.tech = new SmoothTech(this.options);
-            }
+    this.addEventHandler = function(event, handler) {
+        if(!(event.type in this.event_handlers)) {
+            this.event_handlers[event] = {};
         }
 
-        if(this.tech == undefined) {
-            throw 'Url ' + url + ' not recognized.';
+        var id = 'handler_' + this.event_handler_count++;
+        this.event_handlers[event][id] = handler;
+        return id;
+    }
+
+    this.removeEventHandler = function(event, id) {
+        delete this.event_handlers[event][id];
+    }
+
+    this.clearEventHandlers = function() {
+        for(var i = 0; i < this.available_events.length; i++) {
+            this.options.video_element.removeEventListener(this.available_events[i], this.handleEvent, false);
         }
     }
 
@@ -170,11 +166,21 @@ var Player = function(options) {
 
     this.destroy = function() {
         this.clearVideoElement();
-        this.removeEventHandler();
+        this.clearEventHandlers();
         this.tech.destroy();
         this.tech = null;
     }
+    
+    this.init = function() {
+        this.options.event_handler = this.handleEvent;
+        console.log(this.options);
 
-    this.addEventHandler()
-    this.guess();
+        if('dash' == this.options.tech) {
+            this.tech = new DashTech(this.options);
+        } else if('smooth' == this.options.tech) {
+            this.tech = new SmoothTech(this.options);
+        } else if('hls' == this.options.tech) {
+            this.tech = new HlsTech(this.options);
+        }
+    }
 }

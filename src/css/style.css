@@ -180,16 +180,71 @@
     color: white;
 }
 
-/*
-#media-url-toggle-btn, #subtitles-toggle-btn, #la-url-toggle-btn, #headers-toggle-btn {
-    width: 220px;
-    padding-left: 10px;
-}
-*/
 #settings-form a {
     color: white;
 }
 
+#settings-form-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#settings-form-list li {
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+#settings-form-list .btn-flat {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/**
+ * playlist-drawer
+ */
+ #playlist-drawer {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 220px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+#playlist-drawer a {
+    color: white;
+}
+
+#playlist-drawer-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#playlist-drawer-list li {
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+#playlist-drawer-list .btn-flat {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/**
+ * End playlist-drawer
+ */
 #la-url {
     border-bottom: 1px solid white;
 }
@@ -330,27 +385,6 @@
     display: inline-block;
     height: 100%;
     width: 100%;
-}
-
-#settings-form-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-#settings-form-list li {
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-}
-
-#settings-form-list .btn-flat {
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    padding-left: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 .btn {

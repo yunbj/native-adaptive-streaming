@@ -1,43 +1,36 @@
 var HlsTech = function(options) {
     this.options = options;
     this.recover_take = 0;
-    var self = this;
+    var _hls_tech = this;
     this.is_live = false;
 
     this.player = new Hls({
-        // {% if (env['target'] == 'chrome') or  (env['target'] == 'self_hosted') %}
-        
-        enableWorker: true,
-        // {% elif env['target'] == 'firefox' %}
-
         enableWorker: false,
-        // {% endif %}
-        
         debug: options.debug,
 
         xhrSetup: function(xhr, url) {
-            for(var header_name in self.options.headers) {
-                xhr.setRequestHeader(header_name, self.options.headers[header_name]);
+            for(var header_name in _hls_tech.options.headers) {
+                xhr.setRequestHeader(header_name, _hls_tech.options.headers[header_name]);
             }
         }
     });
 
     this.player.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
         data.type = event;
-        self.options.event_handler(data);
+        _hls_tech.options.event_handler(data);
 
-        if(self.options.autoplay === true) {
-            self.options.video_element.play();
+        if(_hls_tech.options.autoplay === true) {
+            _hls_tech.options.video_element.play();
         }
     });
 
     this.player.on(Hls.Events.LEVEL_LOADED, function(event, data) {
         if(data.details != undefined && data.details.type !== 'VOD') {
-            self.is_live = true;
+            _hls_tech.is_live = true;
         }
 
         data.type = event;
-        self.options.event_handler(data);
+        _hls_tech.options.event_handler(data);
     });
 
     this.player.on(Hls.Events.ERROR, function(event, data) {
@@ -48,29 +41,28 @@ var HlsTech = function(options) {
             switch(data.type) {
                 case Hls.ErrorTypes.MEDIA_ERROR: 
                     console.error("Media error");
-                    self.options.event_handler(data);
+                    _hls_tech.options.event_handler(data);
 
-                    if(self.recover_take == 1) {
+                    if(_hls_tech.recover_take == 1) {
                         hls.swapAudioCodec();
                     }
 
                     hls.recoverMediaError();
-                    self.recover_take++;
+                    _hls_tech.recover_take++;
                     break;
                 case Hls.ErrorTypes.NETWORK_ERROR:
                     console.error("Network error");
-                    self.options.event_handler(data);
+                    _hls_tech.options.event_handler(data);
                     hls.startLoad();
                     break;
                 default:
                     console.error("Unrecoverable error");
-                    self.options.event_handler(data);
-                    self.destroy();
+                    _hls_tech.options.event_handler(data);
+                    _hls_tech.destroy();
                     break;
             }
         }
     });
-
 
     this.player.loadSource(this.options.url);
     this.player.attachMedia(options.video_element);

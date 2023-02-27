@@ -7,7 +7,7 @@ var Range = function(options) {
         throw "Default value out of range";
     }
 
-    var self = this;
+    var _range = this;
     this.seek_lock = false;
     this.options = options;
     this.value = options.value;
@@ -61,7 +61,7 @@ var Range = function(options) {
     this.options.target.className = this.options.target_classlist;
 
     this.setValue = function(value) {
-        if(self.seek_lock) {
+        if(_range.seek_lock) {
             return;
         }
 
@@ -107,35 +107,35 @@ var Range = function(options) {
     }
 
     this.seekMouseUp = function(e) {
-        window.removeEventListener('mouseup', self.seekMouseUp);
+        window.removeEventListener('mouseup', _range.seekMouseUp);
     
-        if(!self.seek_lock) {
+        if(!_range.seek_lock) {
             return;
         }
        
-        self.seek_lock = false;
-        window.removeEventListener('mousemove', self.updateProgressPosition);
+        _range.seek_lock = false;
+        window.removeEventListener('mousemove', _range.updateProgressPosition);
 
-        if(self.options.valueChanged != undefined) {
-            if(self.type == 'horizontal') {
-                self.options.valueChanged(self.value);
+        if(_range.options.valueChanged != undefined) {
+            if(_range.type == 'horizontal') {
+                _range.options.valueChanged(_range.value);
             }
 
-            if(self.type == 'vertical') {
-                self.options.valueChanged(self.max_value - self.value);
+            if(_range.type == 'vertical') {
+                _range.options.valueChanged(_range.max_value - _range.value);
             }
         }
     }
     
     this.updateProgressPosition = function(e) {
-        var rect = self.options.target.getBoundingClientRect();
+        var rect = _range.options.target.getBoundingClientRect();
 
-        if(self.type == 'horizontal') {
-            self.setPercentage((e.clientX - rect.left) / rect.width);
+        if(_range.type == 'horizontal') {
+            _range.setPercentage((e.clientX - rect.left) / rect.width);
         }
 
-        if(self.type == 'vertical') {
-            self.setPercentage((e.clientY - rect.top) / rect.height);
+        if(_range.type == 'vertical') {
+            _range.setPercentage((e.clientY - rect.top) / rect.height);
         }
     }
     
@@ -144,17 +144,17 @@ var Range = function(options) {
             return;
         }
         
-        self.seek_lock = true;
-        var rect = self.options.target.getBoundingClientRect();
-        window.addEventListener('mousemove', self.updateProgressPosition, false);
-        window.addEventListener('mouseup', self.seekMouseUp, false);
+        _range.seek_lock = true;
+        var rect = _range.options.target.getBoundingClientRect();
+        window.addEventListener('mousemove', _range.updateProgressPosition, false);
+        window.addEventListener('mouseup', _range.seekMouseUp, false);
 
-        if(self.type == 'horizontal') {
-            self.setPercentage((e.clientX - rect.left) / rect.width);
+        if(_range.type == 'horizontal') {
+            _range.setPercentage((e.clientX - rect.left) / rect.width);
         }
 
-        if(self.type == 'vertical') {
-            self.setPercentage((e.clientY - rect.top) / rect.height);
+        if(_range.type == 'vertical') {
+            _range.setPercentage((e.clientY - rect.top) / rect.height);
         }
 
     }, false);

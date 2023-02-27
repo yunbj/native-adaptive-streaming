@@ -1,5 +1,5 @@
 var SmoothTech = function(options) {
-    var self = this;
+    var _smooth_tech = this;
     this.options = options;
 
     var stream = {

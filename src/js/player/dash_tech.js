@@ -16,44 +16,44 @@ var DashTech = function(options) {
         this.player.setProtectionData(options.protData);
     }
 
-    var self = this;
+    var _dash_tech = this;
 
     this.player.on(dashjs.MediaPlayer.events.METRIC_CHANGED, function(e) {
-        self.options.event_handler(e);
+        _dash_tech.options.event_handler(e);
     });
 
     this.player.on(dashjs.MediaPlayer.events.STREAM_INITIALIZED, function(e) {
-        self.options.event_handler(e);
+        _dash_tech.options.event_handler(e);
     });
 
     this.player.on(dashjs.MediaPlayer.events.MANIFEST_LOADED, function(e) {
         if(e.data.type == 'dynamic') {
-            self.is_live = true;
+            _dash_tech.is_live = true;
         }
 
-        self.options.event_handler(e);
+        _dash_tech.options.event_handler(e);
     });
 
     this.player.on(dashjs.MediaPlayer.events.ERROR, function(e) {
-        self.options.event_handler(e);
+        _dash_tech.options.event_handler(e);
 
         if(e.error.code == 111) {
-            self.options.onLicenseError();
+            _dash_tech.options.onLicenseError();
         }
 
         if(e.error == 'key_session') {
-            self.options.onLicenseError();
+            _dash_tech.options.onLicenseError();
             return;
         }
 
-        self.destroy();
+        _dash_tech.destroy();
     });
 
     this.player.extend("RequestModifier", () => {
             return {
                 modifyRequestHeader: xhr => {
-                    for(var header_name in self.options.headers) {
-                        xhr.setRequestHeader(header_name, self.options.headers[header_name]);
+                    for(var header_name in _dash_tech.options.headers) {
+                        xhr.setRequestHeader(header_name, _dash_tech.options.headers[header_name]);
                     }
 
                     return xhr;
