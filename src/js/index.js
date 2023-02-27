@@ -324,9 +324,10 @@ function playerOnVolumeChange(event) {
 
 function playUrl(url) {
     reset();
+    media_url_input.value = url;
     state_machine.setState('load_qualities', true);
     state_machine.setState('load_audio_selection', true);
-    
+
     player = new Player({
         "url": url,
         "debug": false,
