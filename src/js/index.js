@@ -514,4 +514,14 @@ for(var i = 0; i < btn_flats.length; i++) {
     });
 }
 
+video_element.addEventListener('click', function() {
+    state_machine.transition('controls', 'invisible');
+    state_machine.transition('settings_form', 'invisible');
+    state_machine.transition('playlist_drawer', 'invisible');
+    state_machine.transition('la_url_form', 'invisible');
+    state_machine.transition('headers_form', 'invisible');
+    state_machine.transition('subtitles_url_form', 'invisible');
+    state_machine.transition('media_url_form', 'invisible');
+});
+
 // {% endif %}

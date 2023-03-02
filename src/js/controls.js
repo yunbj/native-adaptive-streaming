@@ -78,10 +78,6 @@ function playerMouseMove() {
     }, 3000);
 }
 
-function playerClick() {
-    state_machine.transition('controls', 'invisible');
-}
-
 function toggleSettings() {
     if(state_machine.getState('settings_form') == 'visible') {
         state_machine.transition('settings_form', 'invisible');
@@ -111,7 +107,6 @@ function toggleMute() {
 }
 
 video_element.addEventListener('mousemove', playerMouseMove);
-video_element.addEventListener('click', playerClick);
 
 controls.addEventListener('mouseover', function() {
     state_machine.transition('controls', 'frozen');
