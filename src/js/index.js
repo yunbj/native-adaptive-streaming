@@ -3,10 +3,11 @@
  */
 
 var maxQuality = false;
+var player_resize_mode = 0;
 
 function resize() {
     player_container.style.width = window.innerWidth + 'px';
-    
+
     if(!video_native_mode) {
         video_element.style.width = window.innerWidth + 'px';
     }
@@ -330,6 +331,11 @@ function playerOnPlaying(event) {
     state_machine.transition('loader', 'invisible');
     resize();
 }
+
+picture_format.addEventListener('change', function(e) {
+    player_resize_mode = parseInt(e.value);
+    resize();
+});
 
 function playerOnPause(event) {
     state_machine.transition('play_pause', 'paused');

@@ -167,7 +167,11 @@ var Player = function(options) {
     this.destroy = function() {
         this.clearVideoElement();
         this.clearEventHandlers();
-        this.tech.destroy();
+
+        if('undefinded' != typeof(this.tech)) {
+            this.tech.destroy();
+        }
+        
         this.tech = null;
     }
     

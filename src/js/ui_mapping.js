@@ -71,6 +71,24 @@ var audio_selection = new Dropdown({
     label: "Audio"
 });
 
+var picture_format = new Dropdown({
+    target: document.querySelector('#picture-format'),
+    label: "Picture Format",
+    options: [{
+        label: "Default",
+        value: 0,
+        selected: true
+    }, {
+        label: "Fill & Crop",
+        value: 1,
+        selected: false
+    }, {
+        label: "Stretch",
+        value: 2,
+        selected: false
+    }]
+});
+
 var playback_speed_selection = new Dropdown({
     target: document.querySelector('#playback-speed-selection'),
     label: "Playback speed",
