@@ -26,9 +26,44 @@ var video_native_mode = false;
 var player_tech = null;
 var playlist = new Playlist();
 
+playlist.updated = function() {
+    clearNode(playlist_drawer_list);
+    var items = playlist.getAll();
+
+    for(var index in items) {
+        var item = items[index];
+
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.classList.add('waves-effect');
+        a.classList.add('waves-red');
+        a.classList.add('btn-flat');
+        a.innerText = item.title;
+        a.setAttribute('data-index', index);
+
+        a.addEventListener('click', function(e) {
+            var playlist_element = e.currentTarget;
+            playlist_element.classList.remove('btn-flat-animate');
+            void playlist_element.offsetWidth;
+            playlist_element.classList.add('btn-flat-animate');
+
+            var target = e.target;
+            var i = target.getAttribute('data-index');
+            var it = playlist.getAt(i);
+            playUrl(it.url);
+        });
+        
+        a.addEventListener('animationend', function(e) {
+            var playlist_element = e.currentTarget;
+            playlist_element.classList.remove('btn-flat-animate');
+        });
+
+        li.appendChild(a);
+        playlist_drawer_list.appendChild(li);
+    }
+}
+
 function techAscertained() {
-    console.log(player_tech);
-    console.log(playlist.getCurrent());
     playUrl(playlist.getCurrent().url);
 }
 
@@ -43,7 +78,6 @@ function loadLibs() {
 
     s3.onload = function() {
         hasplayerjs_loaded = true;
-        console.log('hasplayerjs loaded');
 
         if(hasplayerjs_loaded && hlsjs_loaded && dashjs_loaded) {
             libsLoaded();
@@ -52,7 +86,7 @@ function loadLibs() {
 
     s2.onload = function() {
         dashjs_loaded = true;
-        console.log('dashjs loaded');
+
         if(hasplayerjs_loaded && hlsjs_loaded && dashjs_loaded) {
             libsLoaded();
         }
@@ -60,7 +94,7 @@ function loadLibs() {
 
     s1.onload = function() {
         hlsjs_loaded = true;
-        console.log('hlsjs loaded');
+        
         if(hasplayerjs_loaded && hlsjs_loaded && dashjs_loaded) {
             libsLoaded(); 
         }
@@ -359,8 +393,6 @@ function playUrl(url) {
     player.addEventHandler('manifestLoaded', playerOnManifestLoaded);
     player.addEventHandler('hlsNetworkError', playerOnHlsNetworkError);
     player.init();
-
-    console.log(player);
 }
 
 var addHeader = function() {

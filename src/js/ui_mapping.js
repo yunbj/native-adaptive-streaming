@@ -15,6 +15,7 @@ var volume_popup = document.querySelector("#volume-popup");
 var settings_form = document.querySelector("#settings-form");
 var playlist_drawer = document.querySelector("#playlist-drawer");
 var playlist_drawer_list = document.querySelector("#playlist-drawer-list");
+var playlist_btn = document.querySelector("#playlist-btn");
 var settings_btn = document.querySelector("#settings-btn");
 var volume_btn = document.querySelector("#volume-btn");
 var la_url_form = document.querySelector("#la-url-form");

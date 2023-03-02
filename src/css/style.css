@@ -116,7 +116,7 @@
     min-width: 70px;
 }
 
-#settings, #fullscreen, #volume {
+#settings, #fullscreen, #volume, #playlist {
     height: 48px;
     float: right;
     min-width: 48px;
@@ -215,6 +215,8 @@
     width: 220px;
     background: rgba(0, 0, 0, 0.5);
     color: white;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #playlist-drawer a {
@@ -245,6 +247,38 @@
 /**
  * End playlist-drawer
  */
+
+/**
+ * Scrollbar
+ */
+ ::-webkit-scrollbar {
+    width: 10px;
+}
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: 0;
+    border: 1px solid grey;
+    border-top: 0;
+    border-bottom: 0;
+}
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: white;
+    border-radius: 10px;
+}
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:active {
+    background: #FF4136;
+}
+/**
+ * End scrollbar
+ */
+
+
 #la-url {
     border-bottom: 1px solid white;
 }
@@ -381,7 +415,7 @@
     height: 48px;
 }
 
-#play-pause, #volume-btn, #settings-btn, #fullscren-toggle-btn {
+#play-pause, #volume-btn, #settings-btn, #fullscren-toggle-btn, #playlist-btn {
     display: inline-block;
     height: 100%;
     width: 100%;

@@ -54,6 +54,18 @@ state_machine.addTransitions('settings_form', [
     }}
 ], 'invisible');
 
+state_machine.addTransitions('playlist_drawer', [
+    {from: "visible", to: "invisible", object: subtitles_url_form, handle: function(transition) {
+        playlist_drawer.classList.add('fadeOutLeft');
+        playlist_drawer.classList.remove('fadeInLeft');
+    }},
+    {from: "invisible", to: "visible", object: playlist_drawer, handle: function(transition) {
+        playlist_drawer.classList.remove('collapsed');
+        playlist_drawer.classList.remove('fadeOutLeft');
+        playlist_drawer.classList.add('animated', 'fadeInLeft');
+    }}
+], 'invisible');
+
 
 var timeout_id;
 
@@ -77,6 +89,15 @@ function toggleSettings() {
     }
 
     state_machine.transition('settings_form', 'visible');
+}
+
+function togglePlaylist() {
+    if(state_machine.getState('playlist_drawer') == 'visible') {
+        state_machine.transition('playlist_drawer', 'invisible');
+        return;
+    }
+
+    state_machine.transition('playlist_drawer', 'visible');
 }
 
 function toggleMute() {
@@ -400,10 +421,11 @@ window.addEventListener('resize', progress_resize);
 
 function progress_resize() {
     var controls_center = document.querySelector('#controls-center');
-    controls_center.style.width = (window.innerWidth - 332 - (window.innerWidth * .02)) + 'px';
+    controls_center.style.width = (window.innerWidth - 380 - (window.innerWidth * .02)) + 'px';
 }
 
 progress_resize();
 
 settings_btn.addEventListener('click', toggleSettings);
+playlist_btn.addEventListener('click', togglePlaylist);
 volume_btn.addEventListener('click', toggleMute);

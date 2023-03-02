@@ -1,8 +1,9 @@
-var Playlist = function() {
+var Playlist = function(options) {
     this.items = [];
     var _playlist = this;
     this.position = 0;
     this.loaded = null;
+    this.updated = null;
 
     this.load = function(url) {
         (new Ajax()).get({
@@ -36,6 +37,10 @@ var Playlist = function() {
                 if('undefined' !== typeof(_playlist.loaded)) {
                     _playlist.loaded();
                 }
+
+                if('undefined' !== typeof(_playlist.updated)) {
+                    _playlist.updated();
+                }
             }
         });
     }
@@ -46,6 +51,11 @@ var Playlist = function() {
 
     this.getNext = function() {
         return this.items[++this.position];
+    }
+
+    this.getAll = function() {
+        console.log(this.items);
+        return this.items;
     }
 
     this.getCurrent = function() {
@@ -75,5 +85,9 @@ var Playlist = function() {
 
     this.addItem = function(item) {
         this.items.push(item);
+
+        if('undefined' !== typeof(_playlist.updated)) {
+            this.updated();
+        }
     }
 }
