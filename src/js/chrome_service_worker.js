@@ -6,6 +6,8 @@ var enabled = true;
 var extension_page = chrome.runtime.getURL('/index.html');
 var substitution = extension_page + "#\\0"
 
+console.log(extension_page, substitution)
+
 var rules = [{
   id: 1,
   action: {
@@ -13,7 +15,7 @@ var rules = [{
     redirect: { regexSubstitution: substitution },
   },
   condition: {
-    regexFilter: '^https?://.*/([a-zA-Z0-9-_]+)(\.mpd|\.m3u8?|/Manifest).*',
+    regexFilter: '^https?://.*/([a-zA-Z0-9-_]+)(\.mpd)|(\.m3u(8)?)|(/Manifest).*',
     resourceTypes: ['main_frame', 'sub_frame'],
   },
 }];

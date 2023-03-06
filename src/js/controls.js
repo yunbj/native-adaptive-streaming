@@ -55,9 +55,9 @@ state_machine.addTransitions('settings_form', [
 ], 'invisible');
 
 state_machine.addTransitions('playlist_drawer', [
-    {from: "visible", to: "invisible", object: subtitles_url_form, handle: function(transition) {
-        playlist_drawer.classList.add('fadeOutLeft');
+    {from: "visible", to: "invisible", object: playlist_drawer, handle: function(transition) {
         playlist_drawer.classList.remove('fadeInLeft');
+        playlist_drawer.classList.add('animated', 'fadeOutLeft');
     }},
     {from: "invisible", to: "visible", object: playlist_drawer, handle: function(transition) {
         playlist_drawer.classList.remove('collapsed');

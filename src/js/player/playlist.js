@@ -54,7 +54,6 @@ var Playlist = function(options) {
     }
 
     this.getAll = function() {
-        console.log(this.items);
         return this.items;
     }
 

@@ -177,7 +177,6 @@ var Player = function(options) {
     
     this.init = function() {
         this.options.event_handler = this.handleEvent;
-        console.log(this.options);
 
         if('dash' == this.options.tech) {
             this.tech = new DashTech(this.options);

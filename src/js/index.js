@@ -1,9 +1,9 @@
 /**
  * Modifications copyright (C) 2017 David Ćavar
  */
-
 var maxQuality = false;
 var player_resize_mode = 0;
+var selected_playlist_element = null;
 
 function resize() {
     player_container.style.width = window.innerWidth + 'px';
@@ -43,10 +43,17 @@ playlist.updated = function() {
         a.setAttribute('data-index', index);
 
         a.addEventListener('click', function(e) {
+            if(null !== selected_playlist_element) {
+                selected_playlist_element.classList.remove('selected');
+            }
+
+            selected_playlist_element = e.currentTarget;
+            selected_playlist_element.classList.add('selected');
+
             var playlist_element = e.currentTarget;
-            playlist_element.classList.remove('btn-flat-animate');
+            // playlist_element.classList.remove('btn-flat-animate');
             void playlist_element.offsetWidth;
-            playlist_element.classList.add('btn-flat-animate');
+            // playlist_element.classList.add('btn-flat-animate');
 
             var target = e.target;
             var i = target.getAttribute('data-index');
@@ -54,10 +61,10 @@ playlist.updated = function() {
             playUrl(it.url);
         });
         
-        a.addEventListener('animationend', function(e) {
-            var playlist_element = e.currentTarget;
-            playlist_element.classList.remove('btn-flat-animate');
-        });
+        // a.addEventListener('animationend', function(e) {
+        //     var playlist_element = e.currentTarget;
+        //     playlist_element.classList.remove('btn-flat-animate');
+        // });
 
         li.appendChild(a);
         playlist_drawer_list.appendChild(li);
@@ -158,21 +165,15 @@ function getUrlFromLocation() {
     return url;
 }
 
+function mediaUrlChanged(e) {
+    window.location.href = window.location.href.replace(window.location.hash, media_url_input.value);
+}
+
 window.addEventListener("hashchange", function() {
     console.log('hashchange');
 
     var url = getUrlFromLocation();
-    guessTech(url);
-
-    var count = playlist.getCount();
-    var title = 'Item ' + (count + 1);
-
-    playlist.addItem({
-        url: url,
-        title: title
-    });
-
-    playlist.rewind();
+    guessTech(url, false);
     playUrl(url);
     
 }, false);
@@ -201,50 +202,60 @@ var formatTimeFromSeconds = function(val) {
     return hours + ':' + minutes + ':' + seconds;
 }
 
-function guessTech(url) {
+function guessTech(url, recursive = false) {
+    if('undefined' === typeof(url)) {
+        console.log('URL is undefined');
+        return;
+    }
+    
     if(url.indexOf('.mpd') > -1) {
         console.log("Selecting DASH tech...");
         player_tech = 'dash';
-        var count = playlist.getCount();
-        var title = 'Item ' + (count + 1);
 
-        playlist.addItem({
-            url: url,
-            title: title
-        });
-        techAscertained();
+        if(false === recursive) {
+            var count = playlist.getCount();
+            playlist.addItem({
+                title: 'Stream ' + (count + 1),
+                url: url
+            });
+
+            techAscertained();
+        }
+
     } else if(url.indexOf('.m3u8') > -1) {
         console.log("Selecting HLS tech...");
         player_tech = 'hls';
-        var count = playlist.getCount();
-        var title = 'Item ' + (count + 1);
+        
+        if(false === recursive) {
+            var count = playlist.getCount();
+            playlist.addItem({
+                title: 'Stream ' + (count + 1),
+                url: url
+            });
 
-        playlist.addItem({
-            url: url,
-            title: title
-        });
+            techAscertained();
+        }
 
-        techAscertained();
     } else if(url.indexOf('Manifest') > -1) {
         console.log("Selecting Smooth tech...");
         player_tech = 'smooth';
         
-        var count = playlist.getCount();
-        var title = 'Item ' + (count + 1);
+        if(false === recursive) {
+            var count = playlist.getCount();
+            
+            playlist.addItem({
+                title: 'Stream ' + (count + 1),
+                url: url
+            });
 
-        playlist.addItem({
-            url: url,
-            title: title
-        });
-
-        techAscertained();
+            techAscertained();
+        }
     } else if(url.indexOf('m3u') > -1) {
         console.log("URL is a media playlist...");
 
         playlist.loaded = function() {
             var item = playlist.getCurrent(); 
-            guessTech(item.url);
-            console.log(player_tech);
+            guessTech(item.url, true);
             techAscertained();
         }
 
@@ -342,7 +353,7 @@ function playerOnPause(event) {
 }
 
 function playerOnVolumeChange(event) {
-    if(!player.isMuted()) {
+    if(false === player.isMuted()) {
         volume_range.setValue(player.getVolume() * 100);
         user_volume = player.getVolume();
         
@@ -350,8 +361,8 @@ function playerOnVolumeChange(event) {
         });
 
         if(player.getVolume() == 0) {
-            // volume_btn.childNodes[0].innerText = 'volume_mute';
-        } else if(player.getVolume() > 0 && player.getVolume() < .5) {
+            volume_btn.childNodes[0].innerText = 'volume_mute';
+        } else if(player.getVolume() > 0 && player.getVolume() <= .5) {
             volume_btn.childNodes[0].innerText = 'volume_down';
         } else if(player.getVolume() > .5) {
             volume_btn.childNodes[0].innerText = 'volume_up';
@@ -398,6 +409,7 @@ function playUrl(url) {
     player.addEventHandler('hlsLevelLoaded', playerOnHlsLevelLoaded);
     player.addEventHandler('manifestLoaded', playerOnManifestLoaded);
     player.addEventHandler('hlsNetworkError', playerOnHlsNetworkError);
+
     player.init();
 }
 

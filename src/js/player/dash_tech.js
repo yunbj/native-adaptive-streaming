@@ -13,6 +13,7 @@ var DashTech = function(options) {
     this.is_live = false;
 
     if(options.protData != undefined) {
+        this.player.getProtectionController().setRobustnessLevel('SW_SECURE_CRYPTO')
         this.player.setProtectionData(options.protData);
     }
 
@@ -35,7 +36,13 @@ var DashTech = function(options) {
     });
 
     this.player.on(dashjs.MediaPlayer.events.ERROR, function(e) {
-        _dash_tech.options.event_handler(e);
+        console.log(e, _dash_tech.options.event_handler);
+
+        if('undefined' === typeof(_dash_tech.options.event_handler)) {
+            _dash_tech.options.event_handler(e);
+        } else {
+            console.warn('_dash_tech.options.event_handler is undefined');
+        }
 
         if(e.error.code == 111) {
             _dash_tech.options.onLicenseError();
