@@ -1,2 +1,3 @@
 target: firefox
 environment: prod
+manifest: old
