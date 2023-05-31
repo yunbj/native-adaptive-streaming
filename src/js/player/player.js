@@ -128,7 +128,14 @@ var Player = function(options) {
 
     this.setVolume = function(volume) {
         this.muted = false;
-        this.options.video_element.volume = volume;
+
+        // Crazy bug if the volume is set to 1 on first load then player volumechange event is not fired
+        if(1 == volume) {
+            this.options.video_element.volume = .99;
+        } else {
+            this.options.video_element.volume = volume;
+        }
+
         this.volume = volume;
     }
 

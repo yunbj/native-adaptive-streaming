@@ -375,7 +375,7 @@ window.addEventListener('keyup', function(e) {
 
     if(e.key == 'ArrowUp') {
         if(player.getVolume() + .1 > 1) {
-            player.setVolume(1);
+            player.setVolume(1.0);
             return;
         }
 
@@ -385,7 +385,7 @@ window.addEventListener('keyup', function(e) {
 
     if(e.key == 'ArrowDown') {
         if(player.getVolume() - .1 < 0) {
-            player.setVolume(0);
+            player.setVolume(0.0);
             return;
         }
 

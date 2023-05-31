@@ -466,7 +466,6 @@ for(var i = 0; i < close_input.length; i++) {
 // {% if env['target'] != 'self_hosted' %}
 
 function restoreSettings() {
-
     chrome.storage.local.get({
         hlsjs_version: "1.1.5",
         dashjs_version: "4.3.0",
