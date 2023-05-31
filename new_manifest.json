@@ -5,7 +5,7 @@
     "manifest_version": 3,
     "icons": { "128": "assets/icon128.png" },
     "background": { 
-        "service_worker": "chrome_service_worker.js",
+        "service_worker": "new_service_worker.js",
         "type": "module"
     },
     "permissions": [

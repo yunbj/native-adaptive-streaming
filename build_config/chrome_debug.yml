@@ -1,2 +1,3 @@
 target: chrome
 environment: debug
+manifest: new

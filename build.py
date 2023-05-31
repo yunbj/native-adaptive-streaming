@@ -41,10 +41,10 @@ def build_file(env, f):
 
 
 def build_manifest(env):
-    manifest = 'chrome_manifest.json'
+    manifest = 'new_manifest.json'
 
-    if 'firefox' == env['target']:
-        manifest = 'firefox_manifest.json'
+    if 'old' == env['manifest']:
+        manifest = 'old_manifest.json'
 
     target_file = open(os.path.join(env['path'], 'dist', env['environment'], env['target'], 'manifest.json'), "w")
     target_file.write(j2_env.get_template(manifest).render(env=env).encode("utf-8").decode('utf8'))
