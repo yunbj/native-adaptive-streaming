@@ -13,7 +13,6 @@
     "background": { "scripts": [ "old_service_worker.js"] },
     
     "permissions": [
-        "tabs",
         "*://*/*.m3u8*",
         "*://*/*.mpd*",
         "*://*/*/Manifest*",
