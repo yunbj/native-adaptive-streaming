@@ -35,12 +35,12 @@ var HlsTech = function(options) {
 
     this.player.on(Hls.Events.ERROR, function(event, data) {
         data.type = event;
-        console.error(event, data);
+        console.warning(event, data);
 
         if(data.fatal) {
             switch(data.type) {
                 case Hls.ErrorTypes.MEDIA_ERROR: 
-                    console.error("Media error");
+                    console.warning("Media error");
                     _hls_tech.options.event_handler(data);
 
                     if(_hls_tech.recover_take == 1) {
@@ -51,12 +51,12 @@ var HlsTech = function(options) {
                     _hls_tech.recover_take++;
                     break;
                 case Hls.ErrorTypes.NETWORK_ERROR:
-                    console.error("Network error");
+                    console.warning("Network error");
                     _hls_tech.options.event_handler(data);
                     hls.startLoad();
                     break;
                 default:
-                    console.error("Unrecoverable error");
+                    console.warning("Unrecoverable error");
                     _hls_tech.options.event_handler(data);
                     _hls_tech.destroy();
                     break;

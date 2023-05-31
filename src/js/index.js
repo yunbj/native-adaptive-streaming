@@ -343,10 +343,10 @@ function playerOnPlaying(event) {
     resize();
 }
 
-picture_format.addEventListener('change', function(e) {
-    player_resize_mode = parseInt(e.value);
-    resize();
-});
+// picture_format.addEventListener('change', function(e) {
+//     player_resize_mode = parseInt(e.value);
+//     resize();
+// });
 
 function playerOnPause(event) {
     state_machine.transition('play_pause', 'paused');

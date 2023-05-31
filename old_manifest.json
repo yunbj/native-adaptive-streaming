@@ -3,17 +3,20 @@
     "version": "5.0.0",
     "description": "Allow the browser to play HLS (m3u8) or MPEG-Dash (mpd) video urls 'natively'",
     "manifest_version": 2,
+
+    {% if 'firefox' == env['target'] %}
     "applications": {
         "gecko": {
             "id": "native-dash-hls@cavar.net"
         }
     },
+    {% endif %}
 
     "icons": { "128": "assets/icon128.png" },
     "background": { "scripts": [ "old_service_worker.js"] },
     
     "permissions": [
-        "*://*/*.m3u8*",
+        "*://*/*.m3u*",
         "*://*/*.mpd*",
         "*://*/*/Manifest*",
         "webRequest",

@@ -17,9 +17,10 @@ chrome.webRequest.onBeforeRequest.addListener(function(info) {
     if(
         !enabled 
         || (
-            !info.url.split("?")[0].split("#")[0].endsWith(".m3u8") 
-            && !info.url.split("?")[0].split("#")[0].endsWith(".mpd") 
-            && !info.url.split("?")[0].split("#")[0].endsWith("Manifest")
+            !info.url.split("?")[0].split("#")[0].endsWith(".m3u") && 
+            !info.url.split("?")[0].split("#")[0].endsWith(".m3u8") && 
+            !info.url.split("?")[0].split("#")[0].endsWith(".mpd") && 
+            !info.url.split("?")[0].split("#")[0].endsWith("Manifest")
             )
         ) {
             
@@ -34,4 +35,4 @@ chrome.webRequest.onBeforeRequest.addListener(function(info) {
     }
         
     return { redirectUrl:  playerUrl };
-}, {urls: ["*://*/*.m3u8*", "*://*/*.mpd*", "*://*/*/Manifest*"], types:["main_frame"]}, ["blocking"]);
+}, {urls: ["*://*/*.m3u*", "*://*/*.mpd*", "*://*/*/Manifest*"], types:["main_frame"]}, ["blocking"]);
