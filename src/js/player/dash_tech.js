@@ -36,9 +36,11 @@ var DashTech = function(options) {
     });
 
     this.player.on(dashjs.MediaPlayer.events.ERROR, function(e) {
-        console.log(e, _dash_tech.options.event_handler);
+        console.log(e, _dash_tech.options.event_handler, typeof(_dash_tech.options.event_handler));
 
-        if('undefined' === typeof(_dash_tech.options.event_handler)) {
+        console.error(e.error.message);
+
+        if('undefined' !== typeof(_dash_tech.options.event_handler)) {
             _dash_tech.options.event_handler(e);
         } else {
             console.warn('_dash_tech.options.event_handler is undefined');

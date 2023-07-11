@@ -29,10 +29,17 @@ chrome.webRequest.onBeforeRequest.addListener(function(info) {
 
     var playerUrl = chrome.runtime.getURL('index.html') + "#" + info.url;
 
-    if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
-        chrome.tabs.update(info.tabId, {url: playerUrl});
-        return {cancel: true};
-    }
-        
+    // {% if env['target'] == 'chrome' %}
+
+    chrome.tabs.update(info.tabId, {url: playerUrl});
+    return {cancel: true};
+
+    // {% endif %}
+    
+    // {% if env['target'] == 'firefox' %}
+
     return { redirectUrl:  playerUrl };
+
+    // {% endif %}
+
 }, {urls: ["*://*/*.m3u*", "*://*/*.mpd*", "*://*/*/Manifest*"], types:["main_frame"]}, ["blocking"]);
