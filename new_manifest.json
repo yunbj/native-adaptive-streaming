@@ -9,7 +9,10 @@
         "type": "module"
     },
     "permissions": [
-        "declarativeNetRequest"
+        "tabs",
+        "declarativeNetRequest",
+        "storage",
+        "contextMenus"
     ],
     "host_permissions": [
         "<all_urls>"

@@ -1,3 +1,3 @@
 target: firefox
 environment: debug
-manifest: old
+manifest: new
