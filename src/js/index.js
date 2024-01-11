@@ -166,7 +166,7 @@ function getUrlFromLocation() {
 }
 
 function mediaUrlChanged(e) {
-    window.location.href = window.location.href.replace(window.location.hash, media_url_input.value);
+    // window.location.href = window.location.href.replace(window.location.hash, media_url_input.value);
 }
 
 window.addEventListener("hashchange", function() {
