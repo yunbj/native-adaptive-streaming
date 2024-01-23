@@ -4,13 +4,13 @@ var extension_page = chrome.runtime.getURL('/index.html');
 var substitution = extension_page + "#\\0"
 
 var rules = [{
-  id: 2,
+  id: 1,
   action: {
     type: 'redirect',
     redirect: { regexSubstitution: substitution },
   },
   condition: {
-    regexFilter: '^https?://.*/.*\\.m3u8?|.*\\.mpd|Manifest.*',
+    regexFilter: '^https?://.*/(.*\\.m3u8?)|(.*\\.mpd)|(/Manifest)',
     resourceTypes: ['main_frame', 'sub_frame'],
   },
 }];
@@ -30,7 +30,16 @@ function onClick(info) {
 
 chrome.contextMenus.onClicked.addListener(onClick);
 
-chrome.runtime.onInstalled.addListener(function () {
+chrome.runtime.onInstalled.addListener(async function () {
+    const oldRules = await chrome.declarativeNetRequest.getDynamicRules();
+    
+    chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: oldRules.map((rule) => rule.id),
+        addRules: rules,
+    });
+    
+    console.log(oldRules, chrome.declarativeNetRequest.getDynamicRules());
+
     chrome.contextMenus.create({
         title: 'Open in Native MPEG-Dash + HLS Playback',
         contexts: ['link'],
@@ -70,12 +79,3 @@ chrome.runtime.onInstalled.addListener(function () {
 //         }));
 //     }
 // });
-
-chrome.declarativeNetRequest.getDynamicRules().then(function(oldRules) {
-    chrome.declarativeNetRequest.updateDynamicRules({
-        removeRuleIds: oldRules.map(r => r.id),
-        addRules: rules,
-    });
-
-    console.log(chrome.declarativeNetRequest.getDynamicRules());
-});

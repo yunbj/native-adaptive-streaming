@@ -96,23 +96,25 @@
 
 #duration {
     color: white;
-    padding-top: 16px;
+    padding-top: 13px;
     width: 25%;
     text-align: center;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
+    font-size: 12pt;
     min-width: 70px;
 }
 
 #time {
     color: white;
-    padding-top: 16px;
+    padding-top: 13px;
     width: 10%;
     text-align: center;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
+    font-size: 12pt;
     min-width: 70px;
 }
 
@@ -324,7 +326,7 @@
 #progress {
     width: 98%;
     height: 48px;
-    margin-top: 23px;
+    margin-top: 16px;
     margin-left: 1%;
     margin-right: 1%;
 }
@@ -381,7 +383,7 @@
 #volume-control-container {
     position: absolute;
     height: 80%;
-    margin-left: 48%;
+    margin-left: 35%;
     margin-top: 25px;
 }
 
