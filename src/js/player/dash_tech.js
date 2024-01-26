@@ -77,6 +77,70 @@ var DashTech = function(options) {
 
     this.player.initialize();
     this.player.label = "dash";
+
+    var CMCD_DATA_GENERATED = dashjs.MetricsReporting.events.CMCD_DATA_GENERATED;
+
+    /* possible modes of attach cmcd data */
+    var CMCD_MODE_QUERY = 'query'; /* as query parameters */
+    var CMCD_MODE_HEADER = 'header'; /* as HTTP headers */
+
+    function handleCmcdDataGeneratedEvent(event) {
+        var mode = player.getSettings().streaming.cmcd.mode;
+        var data = mode === CMCD_MODE_HEADER ? getKeysForHeaderMode(event) : getKeysForQueryMode(event);
+        var keys = Object.keys(data);
+
+        keys = keys.sort();
+    }
+
+    function getKeysForQueryMode(event) {
+        var cmcdData = {};
+        var cmcdString = event.cmcdString;
+
+        extractKeyValuePairs(cmcdString, cmcdData);
+        return cmcdData;
+    }
+
+    function getKeysForHeaderMode(event) {
+        var cmcdData = {};
+        var keys = Object.keys(event.headers);
+
+        for (var key of keys) {
+            extractKeyValuePairs(event.headers[key], cmcdData)
+        }
+
+        return cmcdData
+    }
+
+    function extractKeyValuePairs(cmcdString, cmcdData) {
+        if (cmcdString === '') {
+            return;
+        }
+        var keyValuePairs = cmcdString.split(',');
+
+        keyValuePairs.forEach(function (keyValuePair) {
+            var data = keyValuePair.split('=');
+            var key = data[0];
+            var value = data[1];
+
+            cmcdData[key] = value;
+        })
+    }
+
+    if(options.cmcd) {
+        mode = CMCD_MODE_QUERY;
+        if (options.cmcd_use_header) {
+            mode = CMCD_MODE_HEADER;
+        }
+        this.player.updateSettings({
+            streaming: {
+                cmcd: {
+                    enabled: true,
+                    mode: mode,
+                    enabledKeys: ['br', 'd', 'ot', 'tb' , 'bl', 'dl', 'mtp', 'nor', 'nrr', 'su' , 'bs', 'rtp' , 'cid', 'pr', 'sf', 'sid', 'st', 'v']
+                }
+            }
+        });
+    }
     this.player.attachView(options.video_element);
     this.player.setAutoPlay(options.autoplay);
     this.player.attachSource(this.options.url);

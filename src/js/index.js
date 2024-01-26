@@ -24,6 +24,8 @@ var hasplayerjs_loaded = false;
 var maxQuality = false;
 
 var video_native_mode = false;
+var cmcd_enable = false;
+var cmcd_use_header = false;
 var player_tech = null;
 var playlist = new Playlist();
 
@@ -475,12 +477,16 @@ function restoreSettings() {
         use_latest_hasplayerjs: true,
         debug: false,
         video_native_mode: false,
+        cmcd_enable: false,
+        cmcd_use_header: false,
         maxQuality: false,
         user_volume: .5,
     }, function(settings) {
         debug = settings.debug;
         maxQuality = settings.maxQuality;
         video_native_mode = settings.video_native_mode;
+        cmcd_enable = settings.cmcd_enable;
+        cmcd_use_header = settings.cmcd_use_header;
         user_volume = settings.user_volume;
 
         if(settings.use_latest_hlsjs) {

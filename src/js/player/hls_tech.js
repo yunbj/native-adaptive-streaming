@@ -4,7 +4,7 @@ var HlsTech = function(options) {
     var _hls_tech = this;
     this.is_live = false;
 
-    this.player = new Hls({
+    var config = {
         enableWorker: false,
         debug: options.debug,
 
@@ -13,7 +13,15 @@ var HlsTech = function(options) {
                 xhr.setRequestHeader(header_name, _hls_tech.options.headers[header_name]);
             }
         }
-    });
+    };
+
+    if(options.cmcd_enable) {
+        config.cmcd = {
+            useHeaders: options.cmcd_use_header
+        }
+    }
+
+    this.player = new Hls(config);
 
     this.player.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
         data.type = event;

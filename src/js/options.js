@@ -40,6 +40,9 @@ function save_options() {
     var maxQuality = document.getElementById('maxQuality').checked;
     var video_native_mode = document.getElementById('video-native-mode').checked;
 
+    var cmcd_enable = document.getElementById("cmcd").checked;
+    var cmcd_use_header = document.getElementById("cmcd-use-header").checked;
+
     chrome.storage.local.set({
         hlsjs_version: hlsjs_version,
         dashjs_version: dashjs_version,
@@ -49,7 +52,9 @@ function save_options() {
         use_latest_hasplayerjs: use_latest_hasplayerjs,
         debug: dbg,
         maxQuality: maxQuality,
-        video_native_mode: video_native_mode
+        video_native_mode: video_native_mode,
+        cmcd_enable: cmcd_enable,
+        cmcd_use_header: cmcd_use_header
     }, function() {
         var status = document.getElementById('status');
         status.textContent = 'Options saved.';
@@ -69,7 +74,9 @@ function restore_options() {
         use_latest_hasplayerjs: true,
         debug: false,
         maxQuality: false,
-        video_native_mode: false
+        video_native_mode: false,
+        cmcd_enable: false,
+        cmcd_use_header: false
     }, function(items) {
         console.log(items);
 
@@ -103,6 +110,9 @@ function restore_options() {
         document.getElementById('cbDebug').checked = items.debug;
         document.getElementById('maxQuality').checked = items.maxQuality;
         document.getElementById('video-native-mode').checked = items.video_native_mode;
+
+        document.getElementById("cmcd").checked = items.cmcd_enable;
+        document.getElementById("cmcd-use-header").checked = items.cmcd_use_header;
     });
 }
 
